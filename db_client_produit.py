@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("bd_shop.db")
+conn = sqlite3.connect("bd_shop.db", check_same_thread=False)
 
 
 def obtenir_produit_alimentaire():
@@ -29,7 +29,8 @@ def ajouter_produit_alimentaire(libellé_produit, catégorie, prix):
         )
         conn.commit()
         return cursor.lastrowid
-    except:
+    except Exception as e:
+        print(e)
         return False
 
 

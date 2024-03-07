@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("bd_shop.db")
+conn = sqlite3.connect("bd_shop.db", check_same_thread=False)
 
 
 def obtenir_produit_techno():
