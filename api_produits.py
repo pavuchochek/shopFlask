@@ -79,7 +79,7 @@ class ProduitAlimQueries(Resource):
         label = api.payload["libellé_produit"]
         categorie = api.payload["catégorie"]
         prix = api.payload["prix"]
-        success = db_client_produit.modifier_produit_alimentaire(label,categorie, prix)
+        success = db_client_produit.modifier_produit_alimentaire(id,label,categorie, prix)
         if success:
             return (f"Entite {id} mise à jour"), 204
         else:
@@ -96,7 +96,8 @@ class EntityList(Resource):
             {"id": 2, "libellé_produit": "Entité 2"},
         ]
         entities = db_client_produit.obtenir_produit_alimentaire()
-        return entities
+        print(entities)
+        return entities,200
     @namespace_entity.doc("Ajouter une nouvelle entité")
     @namespace_entity.expect(produit_alim_model)
     @namespace_entity.response(201, "Entité créée")
@@ -164,9 +165,13 @@ class ProduitsTechno(Resource):
             return (f"Le produit {id} n'a pas pu être mis à jour"), 401
 @produit_techno.route("/")
 class ProduitsTechnoAll(Resource):
-    def getAll(self):
+    @produit_techno.doc("Tout les produits techno")
+    @produit_techno.marshal_list_with(produit_techno_model)
+    def get(self):
         produits = db_client_produit_techno.obtenir_produit_techno()
+        print(produits)
         return produits
+    
     @produit_techno.doc("Ajouter un nouveau produit techno")
     @produit_techno.expect(produit_techno_model)
     @produit_techno.response(201, "Produit techno créé")
@@ -179,12 +184,12 @@ class ProduitsTechnoAll(Resource):
         description = api.payload["description"]
         marque = api.payload["marque"]
         prix = api.payload["prix"]
-        success = db_client_produit.ajouter_produit_techno(label, categorie, description, marque, prix)
+        success = db_client_produit_techno.ajouter_produit_techno(label, categorie, description, marque, prix)
         if success:
-            print(f"Produit {success} {label} ajouté")
-            return id, 201
+            print(f"Produit  {label} ajouté")
+            return 201
         else:
-            print(f"Le produit {id} {label} n'a pas pu être ajouté")
-            return id, 401
+            print(f"Le produit {label} n'a pas pu être ajouté")
+            return 401
 
 app.run(debug=True)

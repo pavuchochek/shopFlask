@@ -6,8 +6,10 @@ conn = sqlite3.connect("bd_shop.db", check_same_thread=False)
 def obtenir_produit_alimentaire():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM produit_alimentaire")
-    rows = cursor.fetchall()
-    return rows
+    produits=[]
+    for row in cursor:
+        produits.append({"id": row[0], "libellé_produit": row[1], "catégorie": row[2], "prix": row[3]})
+    return produits
 
 
 def obtenir_produit_alimentaire_id(id):

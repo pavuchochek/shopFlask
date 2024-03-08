@@ -6,7 +6,9 @@ conn = sqlite3.connect("bd_shop.db", check_same_thread=False)
 def obtenir_produit_techno():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM produit_techno")
-    rows = cursor.fetchall()
+    produits=[]
+    for rows in cursor:
+        produits.append({"id":rows[0],"libellé_produit":rows[1],"catégorie":rows[2],"description":rows[3],"marque":rows[4],"prix":rows[5],})
     return rows
 
 
